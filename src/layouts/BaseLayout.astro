@@ -3,10 +3,11 @@
 // files bundle every subset (cyrillic, vietnamese, greek, ...) and were
 // blowing the render-blocking CSS up to 500+ KiB for glyphs this site never
 // uses.
-import '@fontsource/ibm-plex-sans/latin-300.css';
+// Weight 300 is a defined design token (--font-weight-light) but nothing on
+// the page currently renders at it — its webfont file is not imported so it
+// isn't shipped; add it back if a future section actually uses it.
 import '@fontsource/ibm-plex-sans/latin-400.css';
 import '@fontsource/ibm-plex-sans/latin-600.css';
-import '@fontsource/ibm-plex-sans-jp/japanese-300.css';
 import '@fontsource/ibm-plex-sans-jp/japanese-400.css';
 import '@fontsource/ibm-plex-sans-jp/japanese-600.css';
 import '@fontsource/ibm-plex-mono/latin-400.css';
