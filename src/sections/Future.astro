@@ -1,0 +1,100 @@
+---
+import { future } from '../content/ja/future';
+import Badge from '../components/Badge.astro';
+---
+
+<section id="future" class="section">
+  <div class="container">
+    <span class="section__eyebrow">{future.eyebrow}</span>
+    <Badge variant="warning">{future.conceptNotice}</Badge>
+    <h2 class="section__title future__title">{future.title}</h2>
+    <p class="section__lede">{future.lede}</p>
+
+    <div class="future__current">
+      <p class="future__current-title">{future.current.title}</p>
+      <ul class="future__current-list">
+        {future.current.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+
+    <ul class="future__vision">
+      {
+        future.visionItems.map((item) => (
+          <li class="future__vision-item">
+            <p class="future__vision-name">{item.name}</p>
+            <p class="future__vision-desc">{item.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .future__title {
+    margin-top: var(--space-16);
+  }
+
+  .future__current {
+    margin-top: var(--space-32);
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-verify-teal);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .future__current-title {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-verify-teal-text);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.8125rem;
+  }
+
+  .future__current-list {
+    margin-top: var(--space-16);
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .future__current-list li {
+    padding: var(--space-4) var(--space-12);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-white);
+    font-size: 0.875rem;
+  }
+
+  .future__vision {
+    margin-top: var(--space-32);
+    list-style: none;
+    display: grid;
+    gap: var(--space-16);
+  }
+
+  .future__vision-item {
+    padding: var(--space-16);
+    border: var(--border-width) dashed var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .future__vision-name {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .future__vision-desc {
+    margin-top: var(--space-4);
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 768px) {
+    .future__vision {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

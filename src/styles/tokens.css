@@ -1,0 +1,126 @@
+/*
+  OrbSeekr Design Tokens
+  Source of truth: OrbSeekr_Design_Book_v1.pptx (REV 1.0, 2026-07).
+  Do not add colors, radii, shadows, or motion values that are not defined here.
+
+  Brand color count is intentionally 3 (Navy / Blue / Teal). The "-text"
+  variants below are NOT additional brand colors — they are darkened copies
+  of the same hue used only when that hue sits behind body-weight text on a
+  light background, so paragraph and label text can clear the 7:1 contrast
+  target (Design Book R09). Fills, icons, borders, and buttons keep using the
+  base hue.
+*/
+
+:root {
+  /* ---- Brand colors (Design Book 03 / COLOR SYSTEM) ---- */
+  --color-orbit-navy: #0e2a47; /* structure */
+  --color-signal-blue: #2563c9; /* interactive */
+  --color-verify-teal: #0f8b84; /* verified / passed state only, never CTA */
+  --color-ink: #0a0f16; /* text / dark backgrounds */
+
+  /* Text-safe variants (see file header) */
+  --color-signal-blue-text: #1a46a8;
+  --color-verify-teal-text: #0a5c54;
+
+  /* ---- Semantic colors (Design Book 03 / COLOR RATIO) ---- */
+  --color-success: #17795e;
+  --color-success-text: #0f5c46;
+  --color-warning: #9a6700;
+  --color-warning-text: #7a5200;
+  --color-danger: #b42318;
+  --color-danger-text: #8f1b12;
+  --color-info: var(--color-signal-blue);
+  --color-info-text: var(--color-signal-blue-text);
+
+  /* ---- Neutrals / surfaces ---- */
+  --color-white: #ffffff;
+  --color-background: var(--color-white); /* White ~60% of the screen */
+  --color-surface: #f2f4f7; /* Surface ~28% of the screen */
+  --color-border: #d7dce2;
+  --color-text: var(--color-ink);
+  --color-text-muted: #3d4b5c; /* secondary text / eyebrow labels / badge labels */
+
+  /* Dark scope — code blocks and report output only (Design Book 07 / CODE & DATA) */
+  --color-dark-bg: var(--color-ink);
+  --color-dark-surface: #131b26;
+  --color-dark-border: #2a3542;
+  --color-dark-text: #e8ecf1;
+  --color-dark-text-muted: #9aa7b5;
+
+  /* ---- Typography ---- */
+  --font-ui: 'IBM Plex Sans', 'IBM Plex Sans JP', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  /* 700 is never used, by design. */
+
+  --heading-letter-spacing: -0.025em;
+  --body-line-height-ja: 1.85;
+  --body-line-height-en: 1.6;
+
+  --measure: 720px; /* body max width; ~45 JP chars / ~75 EN chars at 16px */
+
+  /* ---- Grid & space (Design Book 06 / GRID & SPACE) ---- */
+  --container-max: 1200px;
+
+  --columns-desktop: 12;
+  --gutter-desktop: 24px;
+  --margin-desktop: 96px;
+
+  --columns-tablet: 8;
+  --gutter-tablet: 20px;
+  --margin-tablet: 48px;
+
+  --columns-mobile: 4;
+  --gutter-mobile: 16px;
+  --margin-mobile: 20px;
+
+  --section-spacing-desktop: 128px;
+  --section-spacing-tablet: 96px;
+  --section-spacing-mobile: 64px;
+
+  /* Space scale — 4/8/12/16/24/32/48/64/96/128. No intermediate values. */
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-96: 96px;
+  --space-128: 128px;
+
+  /* ---- Shape ---- */
+  --radius: 6px; /* standard */
+  --radius-lg: 8px; /* maximum — never exceed */
+  --border-width: 1px;
+
+  /* ---- Motion (Design Book 05 / MOTION) ---- */
+  --motion-instant-duration: 80ms;
+  --motion-instant-easing: linear;
+
+  --motion-hover-duration: 160ms;
+  --motion-hover-easing: cubic-bezier(0.2, 0, 0, 1);
+
+  --motion-enter-duration: 240ms;
+  --motion-enter-easing: cubic-bezier(0.2, 0, 0, 1);
+
+  --motion-exit-duration: 120ms;
+  --motion-exit-easing: cubic-bezier(0.4, 0, 1, 1);
+
+  --motion-ambient-duration: 8s;
+  --motion-ambient-easing: ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-instant-duration: 0ms;
+    --motion-hover-duration: 0ms;
+    --motion-enter-duration: 0ms;
+    --motion-exit-duration: 0ms;
+    --motion-ambient-duration: 0ms;
+  }
+}

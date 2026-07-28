@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+---
+
+<BaseLayout title="ページが見つかりません — OrbSeekr" description="お探しのページは見つかりませんでした。">
+  <section class="section not-found">
+    <div class="container">
+      <span class="section__eyebrow">404</span>
+      <h1 class="section__title">ページが見つかりません。</h1>
+      <p class="section__lede">URLが変更されたか、ページが削除された可能性があります。</p>
+      <div class="not-found__action">
+        <Button href="/" variant="primary" external={false}>トップページへ戻る</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .not-found__action {
+    margin-top: var(--space-32);
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+// Dark surface is scoped to code/report output only (Design Book 07 / CODE & DATA).
+interface Props {
+  label?: string;
+  lang?: string;
+}
+
+const { label, lang = 'yaml' } = Astro.props;
+---
+
+<div class="code-block">
+  {label && <p class="code-block__label">{label}</p>}
+  <pre class="code-block__pre"><code class={`language-${lang}`}><slot /></code></pre>
+</div>
+
+<style>
+  .code-block {
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: var(--border-width) solid var(--color-dark-border);
+  }
+
+  .code-block__label {
+    margin: 0;
+    padding: var(--space-8) var(--space-16);
+    background: var(--color-dark-surface);
+    color: var(--color-dark-text-muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-bottom: var(--border-width) solid var(--color-dark-border);
+  }
+
+  .code-block__pre {
+    margin: 0;
+    padding: var(--space-16);
+    background: var(--color-dark-bg);
+    overflow-x: auto;
+  }
+
+  .code-block__pre code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-dark-text);
+    white-space: pre;
+  }
+</style>

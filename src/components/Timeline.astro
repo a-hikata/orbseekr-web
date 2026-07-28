@@ -1,0 +1,86 @@
+---
+interface Phase {
+  label: string;
+  status: string;
+  items: readonly string[];
+}
+
+interface Props {
+  phases: readonly Phase[];
+}
+
+const { phases } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    phases.map((phase) => (
+      <li class="timeline__item">
+        <div class="timeline__marker" aria-hidden="true" />
+        <div class="timeline__content">
+          <p class="timeline__label">
+            {phase.label} <span class="timeline__status">— {phase.status}</span>
+          </p>
+          <ul class="timeline__list">
+            {phase.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .timeline {
+    list-style: none;
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .timeline__item {
+    display: grid;
+    grid-template-columns: var(--space-16) 1fr;
+    gap: var(--space-16);
+  }
+
+  .timeline__marker {
+    width: var(--space-16);
+    height: var(--space-16);
+    border-radius: 50%;
+    border: var(--border-width) solid var(--color-signal-blue);
+    margin-top: 4px;
+  }
+
+  .timeline__label {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.04em;
+  }
+
+  .timeline__status {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+    text-transform: none;
+  }
+
+  .timeline__list {
+    margin-top: var(--space-12);
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+  }
+
+  .timeline__list li {
+    padding: var(--space-4) var(--space-12);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    background: var(--color-white);
+  }
+</style>

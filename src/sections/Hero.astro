@@ -1,0 +1,102 @@
+---
+import { hero } from '../content/ja/hero';
+import Button from '../components/Button.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+---
+
+<section id="hero" class="hero">
+  <div class="hero__arc" aria-hidden="true"></div>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <span class="section__eyebrow">{hero.eyebrow}</span>
+      <h1 class="hero__headline">{hero.headline}</h1>
+      <p class="hero__body">{hero.body}</p>
+      <div class="hero__actions">
+        <Button href={hero.primaryCta.href} variant="primary">{hero.primaryCta.label}</Button>
+        <Button href={hero.secondaryCta.href} variant="secondary">{hero.secondaryCta.label}</Button>
+      </div>
+    </div>
+    <div class="hero__code">
+      <CodeBlock label={hero.codeLabel}>{hero.code}</CodeBlock>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: var(--space-64);
+  }
+
+  @media (min-width: 1120px) {
+    .hero {
+      padding-block: var(--space-96);
+    }
+  }
+
+  /* The single permitted background geometry element: one open arc (270-330deg). */
+  .hero__arc {
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 2px solid var(--color-signal-blue);
+    border-left-color: transparent;
+    border-bottom-color: transparent;
+    opacity: 0.12;
+    animation: hero-ambient var(--motion-ambient-duration) var(--motion-ambient-easing) infinite;
+    pointer-events: none;
+  }
+
+  @keyframes hero-ambient {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(8deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__arc {
+      animation: none;
+    }
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: var(--space-48);
+    position: relative;
+  }
+
+  .hero__headline {
+    margin-top: var(--space-16);
+    font-size: clamp(1.75rem, 1.2rem + 2.6vw, 3rem);
+    max-width: 18ch;
+  }
+
+  .hero__body {
+    margin-top: var(--space-24);
+    max-width: var(--measure);
+    font-size: 1.0625rem;
+    color: var(--color-text-muted);
+  }
+
+  .hero__actions {
+    margin-top: var(--space-32);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16);
+  }
+
+  @media (min-width: 1120px) {
+    .hero__grid {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: center;
+    }
+  }
+</style>

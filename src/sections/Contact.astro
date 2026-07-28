@@ -1,0 +1,84 @@
+---
+import { contact } from '../content/ja/contact';
+import { contactEmail } from '../lib/config';
+import Button from '../components/Button.astro';
+---
+
+<section id="contact" class="section section--surface">
+  <div class="container">
+    <span class="section__eyebrow">{contact.eyebrow}</span>
+    <h2 class="section__title">{contact.title}</h2>
+
+    <div class="contact__grid">
+      {
+        contact.channels.map((channel) => (
+          <div class="contact__card">
+            <p class="contact__label">{channel.label}</p>
+            <p class="contact__desc">{channel.description}</p>
+            {channel.cta ? (
+              <div class="contact__action">
+                <Button href={channel.cta.href} variant="secondary">
+                  {channel.cta.label}
+                </Button>
+              </div>
+            ) : contactEmail ? (
+              <div class="contact__action">
+                <Button href={`mailto:${contactEmail}`} variant="secondary" external={false}>
+                  {contactEmail}
+                </Button>
+              </div>
+            ) : (
+              <p class="contact__fallback">{channel.fallback}</p>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .contact__grid {
+    margin-top: var(--space-32);
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .contact__card {
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-white);
+  }
+
+  .contact__label {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.8125rem;
+    color: var(--color-text-muted);
+  }
+
+  .contact__desc {
+    margin-top: var(--space-12);
+    font-size: 0.9375rem;
+  }
+
+  .contact__action {
+    margin-top: var(--space-16);
+  }
+
+  .contact__fallback {
+    margin-top: var(--space-16);
+    color: var(--color-text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+  }
+
+  @media (min-width: 768px) {
+    .contact__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

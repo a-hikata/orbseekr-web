@@ -1,0 +1,61 @@
+---
+interface Props {
+  steps: readonly string[];
+  label: string;
+}
+
+const { steps, label } = Astro.props;
+---
+
+<div class="diagram" role="img" aria-label={label}>
+  {
+    steps.map((step, i) => (
+      <>
+        <div class="diagram__node">{step}</div>
+        {i < steps.length - 1 && (
+          <span class="diagram__arrow" aria-hidden="true">
+            →
+          </span>
+        )}
+      </>
+    ))
+  }
+</div>
+
+<style>
+  .diagram {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .diagram__node {
+    padding: var(--space-12) var(--space-16);
+    border: var(--border-width) solid var(--color-orbit-navy);
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-orbit-navy);
+    background: var(--color-white);
+    white-space: nowrap;
+  }
+
+  .diagram__arrow {
+    color: var(--color-text-muted);
+    font-size: 1.125rem;
+  }
+
+  @media (max-width: 640px) {
+    .diagram {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .diagram__arrow {
+      transform: rotate(90deg);
+      margin-left: var(--space-16);
+    }
+  }
+</style>

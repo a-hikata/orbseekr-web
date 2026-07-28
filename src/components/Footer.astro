@@ -1,0 +1,105 @@
+---
+import { footer } from '../content/ja/footer';
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <p class="footer__name">OrbSeekr</p>
+      <p class="footer__tagline">{footer.tagline}</p>
+    </div>
+
+    <div class="footer__columns">
+      {
+        footer.columns.map((column) => (
+          <div class="footer__column">
+            <p class="footer__heading">{column.title}</p>
+            <ul>
+              {column.links.map((link) => (
+                <li>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="container">
+    <p class="footer__copyright">{footer.copyright}</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: var(--border-width) solid var(--color-border);
+    padding-block: var(--space-64);
+    background: var(--color-surface);
+  }
+
+  .footer__inner {
+    display: grid;
+    gap: var(--space-48);
+    grid-template-columns: 1fr;
+  }
+
+  .footer__name {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .footer__tagline {
+    margin-top: var(--space-8);
+    color: var(--color-text-muted);
+    max-width: 32ch;
+  }
+
+  .footer__columns {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-32);
+  }
+
+  .footer__heading {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-12);
+  }
+
+  .footer__column ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .footer__column a {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .footer__column a:hover {
+    color: var(--color-signal-blue-text);
+    text-decoration: underline;
+  }
+
+  .footer__copyright {
+    margin-top: var(--space-48);
+    padding-top: var(--space-24);
+    border-top: var(--border-width) solid var(--color-border);
+    color: var(--color-text-muted);
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer__inner {
+      grid-template-columns: 1fr 2fr;
+    }
+  }
+</style>

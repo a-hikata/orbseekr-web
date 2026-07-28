@@ -1,0 +1,67 @@
+---
+// Native <details>/<summary> — keyboard support and screen-reader semantics
+// come from the platform, not custom script.
+interface Item {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items: readonly Item[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="accordion">
+  {
+    items.map((item) => (
+      <details class="accordion__item">
+        <summary class="accordion__trigger">{item.question}</summary>
+        <p class="accordion__panel">{item.answer}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .accordion {
+    border-top: var(--border-width) solid var(--color-border);
+  }
+
+  .accordion__item {
+    border-bottom: var(--border-width) solid var(--color-border);
+  }
+
+  .accordion__trigger {
+    padding: var(--space-16) 0;
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    list-style: none;
+  }
+
+  .accordion__trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .accordion__trigger::before {
+    content: '+';
+    display: inline-block;
+    width: 1.25em;
+    color: var(--color-signal-blue);
+    font-family: var(--font-mono);
+  }
+
+  .accordion__item[open] > .accordion__trigger::before {
+    content: '−';
+  }
+
+  .accordion__panel {
+    padding: 0 0 var(--space-16) 1.25em;
+    color: var(--color-text-muted);
+    max-width: var(--measure);
+  }
+</style>

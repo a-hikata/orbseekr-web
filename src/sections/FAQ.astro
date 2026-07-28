@@ -1,0 +1,31 @@
+---
+import { faq } from '../content/ja/faq';
+import Accordion from '../components/Accordion.astro';
+import Button from '../components/Button.astro';
+---
+
+<section id="faq" class="section">
+  <div class="container">
+    <span class="section__eyebrow">{faq.eyebrow}</span>
+    <h2 class="section__title">{faq.title}</h2>
+
+    <div class="faq__body">
+      <Accordion items={faq.items} />
+    </div>
+
+    <div class="faq__cta">
+      <Button href={faq.cta.href} variant="secondary">{faq.cta.label}</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq__body {
+    margin-top: var(--space-32);
+    max-width: var(--measure);
+  }
+
+  .faq__cta {
+    margin-top: var(--space-32);
+  }
+</style>

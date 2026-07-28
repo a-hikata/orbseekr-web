@@ -1,0 +1,72 @@
+---
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'tertiary';
+  external?: boolean;
+}
+
+const { href, variant = 'primary', external = true } = Astro.props;
+---
+
+<a
+  class={`button button--${variant}`}
+  href={href}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <slot />
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    min-height: 44px;
+    padding: var(--space-12) var(--space-24);
+    border-radius: var(--radius);
+    border: var(--border-width) solid transparent;
+    font-family: var(--font-ui);
+    font-weight: var(--font-weight-semibold);
+    font-size: 0.9375rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-hover-duration) var(--motion-hover-easing),
+      border-color var(--motion-hover-duration) var(--motion-hover-easing),
+      color var(--motion-hover-duration) var(--motion-hover-easing);
+  }
+
+  .button--primary {
+    background: var(--color-signal-blue);
+    color: var(--color-white);
+  }
+
+  .button--primary:hover {
+    background: var(--color-orbit-navy);
+  }
+
+  .button--secondary {
+    background: var(--color-white);
+    color: var(--color-orbit-navy);
+    border-color: var(--color-orbit-navy);
+  }
+
+  .button--secondary:hover {
+    background: var(--color-surface);
+  }
+
+  .button--tertiary {
+    padding: 0;
+    min-height: 0;
+    color: var(--color-signal-blue-text);
+    font-weight: var(--font-weight-regular);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .button--tertiary:hover {
+    color: var(--color-orbit-navy);
+  }
+</style>

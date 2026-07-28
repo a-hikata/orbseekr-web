@@ -1,0 +1,110 @@
+---
+import { openSource } from '../content/ja/openSource';
+import TextLink from '../components/TextLink.astro';
+---
+
+<section id="open-source" class="section">
+  <div class="container">
+    <span class="section__eyebrow">{openSource.eyebrow}</span>
+    <h2 class="section__title">{openSource.title}</h2>
+    <p class="section__lede">{openSource.lede}</p>
+
+    <dl class="opensource__facts">
+      {
+        openSource.facts.map((fact) => (
+          <div class="opensource__fact">
+            <dt>{fact.label}</dt>
+            <dd>{fact.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="opensource__row">
+      <div>
+        <p class="opensource__heading">Governance documents</p>
+        <ul class="opensource__links">
+          {
+            openSource.documents.map((doc) => (
+              <li>
+                <TextLink href={doc.href}>{doc.label}</TextLink>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <p class="opensource__heading">Links</p>
+        <ul class="opensource__links">
+          {
+            openSource.links.map((link) => (
+              <li>
+                <TextLink href={link.href} showArrow>
+                  {link.label}
+                </TextLink>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .opensource__facts {
+    margin-top: var(--space-32);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-16);
+  }
+
+  .opensource__fact {
+    padding: var(--space-16);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .opensource__fact dt {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+  }
+
+  .opensource__fact dd {
+    margin: var(--space-8) 0 0;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .opensource__row {
+    margin-top: var(--space-48);
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .opensource__heading {
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-12);
+  }
+
+  .opensource__links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  @media (min-width: 640px) {
+    .opensource__facts {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 768px) {
+    .opensource__row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import { features } from '../content/ja/features';
+import Card from '../components/Card.astro';
+import Icon from '../components/Icon.astro';
+
+const icons = ['circle-alert', 'layers', 'triangle-alert', 'list-checks', 'file-json', 'git-branch', 'sliders-horizontal', 'terminal'];
+---
+
+<section id="features" class="section section--surface">
+  <div class="container">
+    <span class="section__eyebrow">{features.eyebrow}</span>
+    <h2 class="section__title">{features.title}</h2>
+    <p class="section__lede">{features.lede}</p>
+
+    <ul class="features__grid">
+      {
+        features.items.map((item, i) => (
+          <li>
+            <Card as="li">
+              <div class="features__icon">
+                <Icon name={icons[i] ?? 'circle-check'} size={24} />
+              </div>
+              <p class="features__title">{item.title}</p>
+              <p class="features__desc">{item.description}</p>
+            </Card>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .features__grid {
+    margin-top: var(--space-32);
+    list-style: none;
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .features__icon {
+    color: var(--color-signal-blue);
+  }
+
+  .features__title {
+    margin-top: var(--space-16);
+    font-weight: var(--font-weight-semibold);
+    font-size: 1.0625rem;
+  }
+
+  .features__desc {
+    margin-top: var(--space-8);
+    color: var(--color-text-muted);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 640px) {
+    .features__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1120px) {
+    .features__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

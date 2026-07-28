@@ -1,0 +1,103 @@
+---
+import { architecture } from '../content/ja/architecture';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<section id="architecture" class="section">
+  <div class="container">
+    <span class="section__eyebrow">{architecture.eyebrow}</span>
+    <h2 class="section__title">{architecture.title}</h2>
+    <p class="section__lede">{architecture.lede}</p>
+
+    <div class="architecture__flow">
+      <ArchitectureDiagram
+        steps={architecture.flow}
+        label="データフロー: ユーザーのリポジトリから GitHub-hosted ランナー上で完結する検査"
+      />
+    </div>
+
+    <div class="architecture__columns">
+      <div>
+        <p class="architecture__col-title">
+          <Icon name="lock" size={20} />
+          <span>検査に不要なもの</span>
+        </p>
+        <ul class="architecture__list">
+          {architecture.notRequired.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+      <div>
+        <p class="architecture__col-title">
+          <Icon name="download" size={20} />
+          <span>インストール時のみ発生する通信</span>
+        </p>
+        <ul class="architecture__list">
+          {architecture.duringInstall.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    </div>
+
+    <p class="architecture__disclaimer measure">{architecture.disclaimer}</p>
+  </div>
+</section>
+
+<style>
+  .architecture__flow {
+    margin-top: var(--space-32);
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow-x: auto;
+  }
+
+  .architecture__columns {
+    margin-top: var(--space-48);
+    display: grid;
+    gap: var(--space-32);
+  }
+
+  .architecture__col-title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-orbit-navy);
+  }
+
+  .architecture__list {
+    margin-top: var(--space-16);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .architecture__list li {
+    padding-left: var(--space-24);
+    position: relative;
+    color: var(--color-text-muted);
+  }
+
+  .architecture__list li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+  }
+
+  .architecture__disclaimer {
+    margin-top: var(--space-48);
+    padding: var(--space-16);
+    border: var(--border-width) solid var(--color-warning);
+    border-radius: var(--radius);
+    color: var(--color-warning-text);
+    font-size: 0.9375rem;
+  }
+
+  @media (min-width: 768px) {
+    .architecture__columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

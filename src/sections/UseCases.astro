@@ -1,0 +1,80 @@
+---
+import { useCases } from '../content/ja/useCases';
+---
+
+<section id="use-cases" class="section section--surface">
+  <div class="container">
+    <span class="section__eyebrow">{useCases.eyebrow}</span>
+    <h2 class="section__title">{useCases.title}</h2>
+    <p class="section__lede">{useCases.lede}</p>
+
+    <div class="usecases__grid">
+      {
+        useCases.categories.map((category) => (
+          <div class="usecases__card">
+            <p class="usecases__title">{category.title}</p>
+            <ul>
+              {category.items.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .usecases__grid {
+    margin-top: var(--space-32);
+    display: grid;
+    gap: var(--space-24);
+  }
+
+  .usecases__card {
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-white);
+  }
+
+  .usecases__title {
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+  }
+
+  .usecases__card ul {
+    margin-top: var(--space-16);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .usecases__card li {
+    padding-left: var(--space-16);
+    position: relative;
+  }
+
+  .usecases__card li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-signal-blue);
+  }
+
+  @media (min-width: 768px) {
+    .usecases__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

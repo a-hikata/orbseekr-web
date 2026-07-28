@@ -1,0 +1,20 @@
+---
+interface Props {
+  as?: 'div' | 'li';
+}
+
+const { as: Tag = 'div' } = Astro.props;
+---
+
+<Tag class="card">
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-white);
+    padding: var(--space-24);
+  }
+</style>

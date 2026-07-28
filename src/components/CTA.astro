@@ -1,0 +1,50 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  title: string;
+  primary: { label: string; href: string };
+  secondary?: { label: string; href: string };
+}
+
+const { title, primary, secondary } = Astro.props;
+---
+
+<div class="cta">
+  <p class="cta__title">{title}</p>
+  <div class="cta__actions">
+    <Button href={primary.href} variant="primary">{primary.label}</Button>
+    {
+      secondary && (
+        <Button href={secondary.href} variant="secondary">
+          {secondary.label}
+        </Button>
+      )
+    }
+  </div>
+</div>
+
+<style>
+  .cta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-24);
+    align-items: flex-start;
+    padding: var(--space-32);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .cta__title {
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-semibold);
+    max-width: var(--measure);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16);
+  }
+</style>

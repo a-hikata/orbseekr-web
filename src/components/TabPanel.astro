@@ -1,0 +1,13 @@
+---
+interface Props {
+  groupId: string;
+  id: string;
+  first?: boolean;
+}
+
+const { groupId, id, first = false } = Astro.props;
+---
+
+<div id={`${groupId}-panel-${id}`} role="tabpanel" aria-labelledby={`${groupId}-tab-${id}`} hidden={!first}>
+  <slot />
+</div>

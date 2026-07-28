@@ -1,0 +1,71 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  severity?: 'error' | 'warning' | 'info';
+  title: string;
+  location?: string;
+}
+
+const { severity = 'warning', title, location } = Astro.props;
+
+const iconName = severity === 'error' ? 'circle-alert' : severity === 'info' ? 'circle-check' : 'triangle-alert';
+const severityLabel = severity === 'error' ? 'Error' : severity === 'info' ? 'Info' : 'Warning';
+---
+
+<div class={`alert alert--${severity}`} role="note">
+  <Icon name={iconName} size={20} />
+  <div class="alert__body">
+    <p class="alert__title">
+      <span class="visually-hidden">{severityLabel}: </span>{title}
+      {location && <span class="alert__location">{location}</span>}
+    </p>
+    <p class="alert__message"><slot /></p>
+  </div>
+</div>
+
+<style>
+  .alert {
+    display: flex;
+    gap: var(--space-12);
+    padding: var(--space-16);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+  }
+
+  .alert--error {
+    color: var(--color-danger-text);
+  }
+
+  .alert--warning {
+    color: var(--color-warning-text);
+  }
+
+  .alert--info {
+    color: var(--color-signal-blue-text);
+  }
+
+  .alert__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .alert__title {
+    font-weight: var(--font-weight-semibold);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+  }
+
+  .alert__location {
+    margin-left: var(--space-8);
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .alert__message {
+    color: var(--color-text);
+    font-size: 0.9375rem;
+  }
+</style>

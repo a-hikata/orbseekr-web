@@ -1,0 +1,21 @@
+---
+import { roadmap } from '../content/ja/roadmap';
+import Timeline from '../components/Timeline.astro';
+---
+
+<section id="roadmap" class="section section--surface">
+  <div class="container">
+    <span class="section__eyebrow">{roadmap.eyebrow}</span>
+    <h2 class="section__title">{roadmap.title}</h2>
+
+    <div class="roadmap__timeline">
+      <Timeline phases={roadmap.phases} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .roadmap__timeline {
+    margin-top: var(--space-48);
+  }
+</style>

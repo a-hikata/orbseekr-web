@@ -1,0 +1,148 @@
+---
+import { solution } from '../content/ja/solution';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import Tabs from '../components/Tabs.astro';
+import TabPanel from '../components/TabPanel.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import Table from '../components/Table.astro';
+
+const ruleRows = [
+  { rule: 'EOC101', severity: 'warning', hits: 0 },
+  { rule: 'EOC102', severity: 'warning', hits: 0 },
+  { rule: 'EOC103', severity: 'warning', hits: 0 },
+  { rule: 'EOC201', severity: 'warning', hits: 0 },
+  { rule: 'EOC202', severity: 'warning', hits: 0 },
+  { rule: 'EOC203', severity: 'warning', hits: 0 },
+  { rule: 'EOC301', severity: 'error', hits: 1 },
+  { rule: 'EOC302', severity: 'warning', hits: 0 },
+  { rule: 'EOC401', severity: 'warning', hits: 0 },
+  { rule: 'EOC402', severity: 'warning', hits: 0 },
+];
+---
+
+<section id="solution" class="section">
+  <div class="container">
+    <span class="section__eyebrow">{solution.eyebrow}</span>
+    <h2 class="section__title">{solution.title}</h2>
+    <p class="section__lede">{solution.lede}</p>
+
+    <ol class="solution__steps">
+      {
+        solution.steps.map((step) => (
+          <li class="solution__step">
+            <span class="solution__step-number">{step.number}</span>
+            <p class="solution__step-title">{step.title}</p>
+            <p class="solution__step-desc">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="solution__flow">
+      <ArchitectureDiagram steps={solution.flow} label="検査フロー: JSON からルール検査、GitHub Annotation を経て合否判定まで" />
+    </div>
+
+    <div class="solution__practice">
+      <p class="solution__practice-title">実際の出力（eo-claim-lint v0.1.0 / 合成データ）</p>
+      <Tabs
+        groupId="practice"
+        tabs={[
+          { id: 'annotation', label: 'GitHub annotation' },
+          { id: 'cli', label: 'CLI output' },
+          { id: 'rules', label: 'Rules' },
+        ]}
+      >
+        <TabPanel groupId="practice" id="annotation" first>
+          <CodeBlock label="Pull request annotation" lang="text"
+            >{
+              `::error file=claims/harvest-index.json,title=EOC301::$.evidence: This claim references no evidence. Add at least one reference so that a reader can trace where the value came from.`
+            }</CodeBlock
+          >
+        </TabPanel>
+        <TabPanel groupId="practice" id="cli">
+          <CodeBlock label="$ eo-claim-lint check bad.json" lang="console"
+            >{
+              `bad.json: EOC301 error $.evidence This claim references no evidence. Add at least one reference so that a reader can trace where the value came from.
+1 file checked: 1 error, 0 warnings, 0 info`
+            }</CodeBlock
+          >
+        </TabPanel>
+        <TabPanel groupId="practice" id="rules">
+          <Table
+            caption="10 rules and their default severity"
+            columns={[
+              { key: 'rule', label: 'Rule' },
+              { key: 'severity', label: 'Severity' },
+              { key: 'hits', label: 'Hits (example)', numeric: true },
+            ]}
+            rows={ruleRows}
+          />
+        </TabPanel>
+      </Tabs>
+    </div>
+  </div>
+</section>
+
+<style>
+  .solution__steps {
+    margin-top: var(--space-32);
+    list-style: none;
+    display: grid;
+    gap: var(--space-24);
+    counter-reset: step;
+  }
+
+  .solution__step {
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+  }
+
+  .solution__step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: var(--border-width) solid var(--color-signal-blue);
+    color: var(--color-signal-blue-text);
+    font-family: var(--font-mono);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .solution__step-title {
+    margin-top: var(--space-16);
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  .solution__step-desc {
+    margin-top: var(--space-8);
+    color: var(--color-text-muted);
+  }
+
+  .solution__flow {
+    margin-top: var(--space-48);
+    padding: var(--space-24);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    overflow-x: auto;
+  }
+
+  .solution__practice {
+    margin-top: var(--space-64);
+  }
+
+  .solution__practice-title {
+    font-weight: var(--font-weight-semibold);
+    margin-bottom: var(--space-24);
+  }
+
+  @media (min-width: 768px) {
+    .solution__steps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
