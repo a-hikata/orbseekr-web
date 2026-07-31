@@ -51,14 +51,26 @@ for (const file of files.filter((f) => /\.(html|xml|txt|json|js|css)$/.test(f)))
   }
 }
 
+// URLs are compared by parsed origin, never by string prefix: "https://
+// www.orbseekr.jp.example.com/" starts with the production origin as text but
+// is a different site.
+const originOf = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return null;
+  }
+};
+const isProductionUrl = (value) => originOf(value) === ORIGIN;
+
 // 3. The document must claim the production origin.
 const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
 if (canonical !== `${ORIGIN}/`) fail(`canonical is "${canonical}", expected "${ORIGIN}/"`);
 
 for (const property of ['og:url', 'og:image']) {
   const value = html.match(new RegExp(`<meta property="${property}" content="([^"]+)"`))?.[1];
-  if (!value?.startsWith(`${ORIGIN}/`)) {
-    fail(`${property} is "${value}", expected an absolute URL under ${ORIGIN}/`);
+  if (!value || !isProductionUrl(value)) {
+    fail(`${property} is "${value}", expected an absolute URL on ${ORIGIN}`);
   }
 }
 
@@ -72,7 +84,7 @@ for (const jsonLd of html.matchAll(/<script type="application\/ld\+json">([\s\S]
   for (const url of urls) {
     const { host } = new URL(url);
     if (JSON_LD_EXTERNAL_HOSTS.has(host)) continue;
-    if (!url.startsWith(ORIGIN)) fail(`JSON-LD names a non-production URL: ${url}`);
+    if (!isProductionUrl(url)) fail(`JSON-LD names a non-production URL: ${url}`);
   }
 }
 
@@ -87,9 +99,14 @@ if (/^\s*Disallow:\s*\/\s*$/im.test(robotsTxt)) fail('robots.txt disallows the w
 
 // 5. The sitemap must advertise the production origin.
 const sitemapIndex = join(DIST, 'sitemap-index.xml');
-if (!existsSync(sitemapIndex)) fail('sitemap-index.xml is missing');
-else if (!readFileSync(sitemapIndex, 'utf8').includes(ORIGIN)) {
-  fail('sitemap-index.xml does not reference the production origin');
+if (!existsSync(sitemapIndex)) {
+  fail('sitemap-index.xml is missing');
+} else {
+  const locs = [...readFileSync(sitemapIndex, 'utf8').matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  if (locs.length === 0) fail('sitemap-index.xml lists no <loc>');
+  for (const loc of locs.filter((l) => !isProductionUrl(l))) {
+    fail(`sitemap-index.xml lists a non-production URL: ${loc}`);
+  }
 }
 
 // 6. Every local reference must exist in the artifact. A 404 asset is the
