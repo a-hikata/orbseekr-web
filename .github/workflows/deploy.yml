@@ -1,16 +1,16 @@
 name: Deploy
 
-# Publishes the static build to GitHub Pages.
+# Publishes the static build to GitHub Pages at https://www.orbseekr.jp.
 #
-# Until DNS for www.orbseekr.jp points at Pages, this deploys a *staging*
-# build: canonical URLs, the sitemap, and robots.txt all describe the Pages
-# project URL, and robots.txt disallows crawling so the staging copy cannot
-# compete with the production domain for the same content.
+# The production origin and base path are NOT set here. They are the defaults
+# in astro.config.mjs — SITE_URL=https://www.orbseekr.jp, BASE_PATH=/ — which
+# is the single source of truth for the site's identity. Repeating them here
+# would create a second place that has to agree.
 #
-# To cut over to production, set the two variables below to:
-#   SITE_URL:  https://www.orbseekr.jp
-#   BASE_PATH: /
-# and add the custom domain in Settings -> Pages. Nothing else changes.
+# Overriding SITE_URL / BASE_PATH is what produces a *staging* build, and a
+# staging build must never be what this workflow publishes: served from the
+# custom domain, its assets resolve under the project subpath and 404, its
+# canonical points at github.io, and its robots policy is noindex.
 
 on:
   push:
@@ -26,10 +26,6 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
-
-env:
-  SITE_URL: https://a-hikata.github.io
-  BASE_PATH: /orbseekr-web
 
 jobs:
   build:
@@ -53,10 +49,11 @@ jobs:
           npm run typecheck
           npm run test:unit
 
+      # No SITE_URL / BASE_PATH: the astro.config.mjs defaults are production.
       - run: npm run build
-        env:
-          SITE_URL: ${{ env.SITE_URL }}
-          BASE_PATH: ${{ env.BASE_PATH }}
+
+      - name: Refuse to publish a staging build
+        run: node scripts/assert-production-build.mjs
 
       # actions/upload-pages-artifact v4.0.0
       - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
