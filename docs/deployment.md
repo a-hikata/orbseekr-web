@@ -1,12 +1,91 @@
 # Deployment guide
 
 Static output (`npm run build` → `dist/`). No server runtime is required.
-This guide covers both deployment targets named in the brief; pick one — do
-not run both against the same domain.
 
-**None of the steps below have been executed.** Domain, DNS, and production
-publish are explicit-permission actions and are left for the maintainer to
-run themselves (or to ask for, explicitly, one step at a time).
+## Current state
+
+**Adopted host: GitHub Pages.** The site is built and published by
+`.github/workflows/deploy.yml` on every push to `main`.
+
+|                     |                                                  |
+| ------------------- | ------------------------------------------------ |
+| Live (staging)      | <https://a-hikata.github.io/orbseekr-web/>       |
+| Intended production | `https://www.orbseekr.jp` — **not yet cut over** |
+
+The staging build is deliberately not indexable: `robots.txt` disallows
+crawling and every page carries `noindex, nofollow`. Both flip automatically
+once the build runs against the production origin.
+
+### Why GitHub Pages rather than Cloudflare Pages
+
+Cloudflare Pages is the better host on the merits — it applies `public/_headers`,
+serves from the domain root, and can express the apex/www redirect as a rule.
+GitHub Pages was adopted anyway, for one reason that outweighs those: **DNS for
+`orbseekr.jp` lives at GMO/お名前.com and carries records this project does not
+own.** Cloudflare Pages wants the zone on Cloudflare nameservers, which would
+migrate _every_ record — mail included — to make a marketing page load. GitHub
+Pages needs one `CNAME` on `www` and touches nothing else.
+
+The cost of that choice is real and is recorded below.
+
+### What GitHub Pages cannot do
+
+`public/_headers` is inert here — GitHub Pages serves no custom response
+headers. Measured on the live site:
+
+| Header                                                            | Status                                                                |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `Strict-Transport-Security`                                       | present (`max-age=31556952`), supplied by GitHub                      |
+| `Content-Security-Policy`                                         | **absent** as a header; a reduced policy ships as `<meta http-equiv>` |
+| `Referrer-Policy`                                                 | **absent** as a header; ships as `<meta name="referrer">`             |
+| `X-Frame-Options`, `X-Content-Type-Options`, `Permissions-Policy` | **absent**, header-only, no meta equivalent                           |
+| `Cache-Control`                                                   | fixed at `max-age=600`; not configurable                              |
+
+This is acceptable for a static page with no forms, cookies, authentication, or
+third-party embeds. **Move to Cloudflare Pages when any of those appear** — that
+is the trigger, not a date.
+
+## Cutting over to www.orbseekr.jp
+
+`www.orbseekr.jp` currently serves an unrelated default WordPress install on
+お名前.com shared hosting. Cutting over replaces it. Three steps, in order:
+
+1. **DNS** — at the GMO / お名前.com control panel, point `www` at Pages:
+
+   | Type  | Name  | Value                 |
+   | ----- | ----- | --------------------- |
+   | CNAME | `www` | `a-hikata.github.io.` |
+
+   Leave the apex `A` record alone until step 3, so the old site keeps
+   answering while the certificate is issued.
+
+2. **Custom domain** — repository → Settings → Pages → Custom domain →
+   `www.orbseekr.jp` → Save, then wait for the check to pass and tick
+   **Enforce HTTPS**. GitHub writes a `CNAME` file to the repository root.
+
+3. **Build for production** — in `.github/workflows/deploy.yml` set:
+
+   ```yaml
+   env:
+     SITE_URL: https://www.orbseekr.jp
+     BASE_PATH: /
+   ```
+
+   Push. Canonical URLs, `og:image`, the sitemap, and `robots.txt` follow
+   automatically, and the `noindex` comes off.
+
+4. **Apex** — decide whether `orbseekr.jp` should redirect to `www` (it does
+   today, via the WordPress host). GitHub Pages can serve the apex through
+   `A` records to `185.199.108–111.153`, but it cannot issue a redirect
+   between the two; that has to happen at the DNS or hosting layer.
+
+Note that `vercel.json` still redirects `www` → apex, the opposite of the
+direction adopted here. It is unused on GitHub Pages; reconcile it before
+deploying to Vercel.
+
+---
+
+The two options below are kept for reference. **Neither has been executed.**
 
 ## Environments
 

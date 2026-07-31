@@ -134,8 +134,29 @@ section.
 
 ## Deployment
 
-See [`docs/deployment.md`](docs/deployment.md) for Cloudflare Pages / Vercel
-setup, DNS, and the production readiness checklist.
+Published to **GitHub Pages** by `.github/workflows/deploy.yml` on every push
+to `main`.
+
+|                     |                                              |
+| ------------------- | -------------------------------------------- |
+| Live (staging)      | <https://a-hikata.github.io/orbseekr-web/>   |
+| Intended production | `https://www.orbseekr.jp` — not yet cut over |
+
+The staging build is not indexable by design: `robots.txt` disallows crawling
+and pages carry `noindex, nofollow`. Both flip automatically once `SITE_URL` is
+set to the production origin.
+
+The build's identity comes from two environment variables, so a build always
+describes the host it is actually served from:
+
+| Variable    | Staging                      | Production                |
+| ----------- | ---------------------------- | ------------------------- |
+| `SITE_URL`  | `https://a-hikata.github.io` | `https://www.orbseekr.jp` |
+| `BASE_PATH` | `/orbseekr-web`              | `/`                       |
+
+See [`docs/deployment.md`](docs/deployment.md) for the DNS cutover, what
+GitHub Pages cannot do about response headers, and the Cloudflare Pages /
+Vercel alternatives.
 
 ## License
 
