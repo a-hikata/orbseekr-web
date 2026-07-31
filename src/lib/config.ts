@@ -1,7 +1,16 @@
+/**
+ * The site's own identity.
+ *
+ * `url` is not hardcoded here: it comes from `Astro.site`, which is set in
+ * `astro.config.mjs` from `SITE_URL`. Keeping one source means a staging build
+ * cannot emit canonical tags pointing at a host it is not served from.
+ */
 export const site = {
-  url: 'https://orbseekr.jp',
   name: 'OrbSeekr',
 } as const;
+
+/** True only for the production origin; staging builds must not be indexed. */
+export const isProduction = (siteUrl: URL | undefined): boolean => siteUrl?.origin === 'https://www.orbseekr.jp';
 
 export const links = {
   repo: 'https://github.com/a-hikata/eo-claim-lint',

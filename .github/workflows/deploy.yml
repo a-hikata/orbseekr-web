@@ -1,0 +1,75 @@
+name: Deploy
+
+# Publishes the static build to GitHub Pages.
+#
+# Until DNS for www.orbseekr.jp points at Pages, this deploys a *staging*
+# build: canonical URLs, the sitemap, and robots.txt all describe the Pages
+# project URL, and robots.txt disallows crawling so the staging copy cannot
+# compete with the production domain for the same content.
+#
+# To cut over to production, set the two variables below to:
+#   SITE_URL:  https://www.orbseekr.jp
+#   BASE_PATH: /
+# and add the custom domain in Settings -> Pages. Nothing else changes.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; never cancel a run that is already publishing.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SITE_URL: https://a-hikata.github.io
+  BASE_PATH: /orbseekr-web
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # actions/checkout v5.0.0
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
+
+      # actions/setup-node v5.0.0
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verify before publishing
+        run: |
+          npm run lint
+          npm run format:check
+          npm run typecheck
+          npm run test:unit
+
+      - run: npm run build
+        env:
+          SITE_URL: ${{ env.SITE_URL }}
+          BASE_PATH: ${{ env.BASE_PATH }}
+
+      # actions/upload-pages-artifact v4.0.0
+      - uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # actions/deploy-pages v4.0.5
+      - id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e
