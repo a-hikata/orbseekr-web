@@ -139,6 +139,11 @@ setup, DNS, and the production readiness checklist.
 
 ## License
 
-Site code: to be decided by the OrbSeekr maintainer before the repository is
-made public (see "Remaining manual actions" in the implementation report).
-`eo-claim-lint` itself is Apache License 2.0.
+Site code is under the [Apache License 2.0](LICENSE), the same licence as
+`eo-claim-lint`.
+
+The licence covers the code, not the identity. Apache-2.0 section 6 withholds
+trademark rights, so the OrbSeekr name and logo, the Design Book brand system,
+and the site copy are not licensed for reuse — see [NOTICE](NOTICE). Building a
+different site from this code is fine; presenting something else as OrbSeekr is
+not.

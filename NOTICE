@@ -1,0 +1,41 @@
+OrbSeekr website (orbseekr-web)
+Copyright 2026 Takahito Suzuki
+
+This product includes software developed for the OrbSeekr project.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+------------------------------------------------------------------------------
+Scope of the licence
+------------------------------------------------------------------------------
+
+The Apache License 2.0 above covers the **source code** of this site: the Astro
+components, TypeScript, CSS, build configuration, and tests.
+
+It does not grant rights to:
+
+- The "OrbSeekr" name, logo, or wordmark. Apache-2.0 section 6 explicitly
+  withholds trademark rights, and nothing here adds them back.
+- The brand system defined in OrbSeekr_Design_Book_v1.pptx — the colour
+  palette, typography rules, and layout grid as an identity. The CSS that
+  implements them is licensed; the identity they express is not.
+- The site copy. The prose describing OrbSeekr and its products is written
+  about a specific project and is not offered for reuse.
+
+Reusing the code to build a different site is fine. Reusing it to present
+something as OrbSeekr is not.
+
+------------------------------------------------------------------------------
+Third-party components
+------------------------------------------------------------------------------
+
+- IBM Plex Sans, IBM Plex Sans JP, IBM Plex Mono — SIL Open Font License 1.1,
+  vendored through @fontsource.
+- Lucide icons — ISC License, inlined at build time through lucide-static.
+- Astro and its integrations — MIT License.
+
+Each retains its own licence; see node_modules/<package>/LICENSE after install.
