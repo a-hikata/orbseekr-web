@@ -17,4 +17,17 @@ export default defineConfig({
   site: SITE_URL,
   base: BASE_PATH,
   integrations: [sitemap()],
+  build: {
+    // Emit the two component scripts as files rather than inlining them.
+    // A Content-Security-Policy of `script-src 'self'` blocks inline
+    // execution, which would silently break the nav toggle and the tabbed
+    // code viewer; served from a file, both are allowed by the same policy
+    // without loosening it to 'unsafe-inline'.
+    inlineStylesheets: 'auto',
+  },
+  vite: {
+    build: {
+      assetsInlineLimit: 0,
+    },
+  },
 });
